@@ -30,6 +30,7 @@ set softtabstop=4
 set cindent
 set splitbelow
 set splitright
+set wrap
 
 set t_Co=256
 
