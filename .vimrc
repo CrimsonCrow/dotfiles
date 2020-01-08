@@ -14,7 +14,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Tmuxline
 Plug 'edkolev/tmuxline.vim'
-
 " Automatic resizing for vim windows to golden ratio
 Plug 'roman/golden-ratio'
 call plug#end()
@@ -31,14 +30,16 @@ set cindent
 set splitbelow
 set splitright
 set wrap
+set textwidth=0
+set wrapmargin=0
 
 set t_Co=256
 
 " Vim keys remapping
 " Tab bindings
 nnoremap tn :tabnew<Space>
-nnoremap th :tabnext<CR>
-nnoremap tl :tabprev<CR>
+nnoremap tl :tabnext<CR>
+nnoremap th :tabprev<CR>
 nnoremap tH :tabfirst<CR>
 nnoremap tL :tablast<CR>
 
