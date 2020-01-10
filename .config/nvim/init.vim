@@ -15,6 +15,10 @@ Plug 'roman/golden-ratio'
 Plug 'ycm-core/youcompleteme'
 " deus colorscheme
 Plug 'ajmwagar/vim-deus'
+" vim plugin that displays tags in a window
+Plug 'majutsushi/tagbar'
+" A tree explorer for vim
+Plug 'scrooloose/nerdtree'
 call plug#end()
 
 set exrc
@@ -30,11 +34,11 @@ set nowrap
 set smarttab
 set expandtab
 
-set t_Co=256
-set termguicolors
-
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+set t_Co=256
+set termguicolors
 
 set background=dark    " Setting dark mode
 colorscheme deus
@@ -62,3 +66,9 @@ let g:airline#extensions#tmuxline#enabled = 1
 
 " golden ratio config
 let g:golden_ratio_exclude_nonmodifiable = 1
+
+" change tagbar toggle to 'tt'
+nnoremap tt :TagbarToggle<CR>
+
+" change nerdtree toggle to 'nt'
+nnoremap nt :NERDTreeToggle<CR>
