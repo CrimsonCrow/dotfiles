@@ -1,0 +1,7 @@
+Theme = jeanne
+ShowTime = yes
+PlaylistFullPaths = no
+ReadTags = no
+Shuffle = yes
+ShowHiddenFiles = no
+MusicDir = "/home/mors/Music/"
