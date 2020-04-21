@@ -1,0 +1,178 @@
+conky.config = {
+--=====================================================================================
+--                               aurora
+-- Date    : 07/02/2016
+-- Author  : Erik Dubois at http://www.erikdubois.be
+-- Version : v3.0.2
+-- License : Distributed under the terms of GNU GPL version 2 or later
+-- Documentation English: http://erikdubois.be/linux/install-conky-theme-aurora
+-- Documentation Dutch: http://erikdubois.be/linux/conky
+--======================================================================================
+
+--======================================================================================
+--                               
+-- Source : https://plus.google.com/+RobertPartridge/ and 
+-- https://plus.google.com/u/0/+ThomasThompson/
+-- Your work has been put to good use
+--======================================================================================
+
+--##Settings###
+	background = true,
+	cpu_avg_samples = 1,
+	default_bar_width = 100, default_bar_height = 8,
+	default_graph_width = 200, default_graph_height = 100,
+	diskio_avg_samples = 10,
+	double_buffer = true,
+	extra_newline = false,
+	if_up_strictness = 'address',
+	net_avg_samples = 1,
+	no_buffers = true,
+	temperature_unit = 'celsius',
+	text_buffer_size = 2048,
+	short_units = true,
+	update_interval = 1,
+--##End Settings###
+
+--##Position###
+	alignment = 'top_right',
+	gap_x = 0,
+	gap_y = 0,
+	minimum_width = 300, minimum_height = 760,
+	maximum_width = 300,
+--##End Position###
+
+--##Borders###
+	border_inner_margin = 0,
+	border_outer_margin = 10,
+	border_width = 0,
+	draw_borders = false,
+	draw_graph_borders = true,
+	draw_outline = false,
+	draw_shades = false,
+--##End Borders###
+
+--##Window###
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_argb_visual = true,
+	own_window_argb_value = 0,
+	own_window_transparent = false,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+--##End Window###
+
+--##Font###
+	max_text_width = 0,
+	override_utf8_locale = true,
+	uppercase = false,
+	use_spacer = 'none',
+	use_xft = true,
+	font = 'Ubuntu:size=8',
+	xftalpha = 0.9,
+--##End Font###
+
+--##Defining Colors###
+	default_color = '#FFFFFF',
+	default_outline_color = '#000000',
+	default_shade_color = '#000000',
+--##End Color###
+
+	own_window_colour = '#000000',
+	own_window_transparent = true,
+
+
+
+
+};
+
+conky.text = [[
+#
+${font Ubuntu:size=20}${time %H}:${time %M}:${time %S}${font}${offset 70}${font Ubuntu:size=10}${time %a} ${time %e} ${time %B}, ${time %Y}${font}
+#
+#
+##############################################
+${font Ubuntu:size=10}${offset 1}S Y S T E M ${font openlogos:size=19}y${font}   ${hr 2}${font}
+##############################################
+    ${font Orore:size=8}f${font}${voffset 0} Operating System: ${alignr}${exec uname -o}
+    ${font openlogos:size=12}t${font}${voffset 0} Distro:${alignr}${exec uname -n}
+    ${font ConkyColors:size=8}e${font}${voffset 0} Kernel: ${alignr}${exec uname} ${exec uname -r}
+#   Nvidia: ${alignr}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}
+#   Nvidia Driver: ${alignr}${execi 60000 nvidia-smi | grep "Driver Version"| awk {'print $3'}}
+    ${font Orore:size=8}P${font}${voffset 0} Uptime: ${alignr}${uptime}
+#   ${font ConkyColors:size=8}5${font}${voffset 0} Battery: ${alignr}   Restante ${battery_time BAT0}  ${battery_short BAT0}${alignr}
+#
+#
+${voffset }
+########################################################
+${voffset }${font Ubuntu:size=10}P R O C E S S E S  ${font ConkyColors:size=18}e${font}  ${hr 2}${font}
+########################################################
+    ${font Orore:size=8}B${font}${voffset 0} CPU Frequency: $alignr${freq_g} GHz
+    ${font ConkyColors:size=8}h${font}${voffset 0} CPU Temperature: $alignr${execi 10 sensors | grep 'Core 0' | awk {'print $3'}}
+    ${font ConkyColors:size=8}n${font}${voffset 0} History: ${alignr}${cpugraph 8,100}
+#            
+            ${font}${offset 10}${voffset 2}${font ConkyColors:size=8}d${font}${voffset 0}CPU Number 1: ${alignr}${offset -10}${cpu cpu0}%${alignr}${cpubar cpu01}
+            ${offset 10}${font ConkyColors:size=8}d${font}${voffset 0}CPU Number 2: ${alignr}${offset -10}${cpu cpu1}%${alignr}${cpubar cpu1}
+#           ${offset 30}${font ConkySymbols:size=8}f${font}${voffset 0}CPU Núcleo 3: ${alignr}${offset -10}${cpu cpu2}%${alignr}${cpubar cpu2}
+#           ${offset 30}${font ConkySymbols:size=8}f${font}${voffset 0}CPU Núcleo 4: ${alignr}${offset -10}${cpu cpu3}%${alignr}${cpubar cpu3}
+			
+			${font Orore:size=18}M${font}${offset 8}${voffset -12}RAM: ${alignr}${offset -10}${mem} / ${memmax}${alignr}${membar}
+			${offset 30}Swap: ${alignr}${offset -10}${swap} / ${swapmax}${alignr}${swapbar}
+ 
+#    
+    ${voffset 5}${font ConkyColors:size=8}l${font}Top Process${alignr}${goto 170}proc id       ${goto 222}cpu%   ${goto 274}mem%
+    ${offset 13}    ${font Orore:size=8}L${font} 1  -  ${top name 1}${alignr}${goto 170}${top pid 1} ${goto 222}${top cpu 1} ${goto 274}${top mem 1}
+					    ${font Orore:size=8}L${font} 2  -  ${top name 2}${alignr}${goto 170}${top pid 2} ${goto 222}${top cpu 2} ${goto 274}${top mem 2}
+					    ${font Orore:size=8}L${font} 3  -  ${top name 3}${alignr}${goto 170}${top pid 3} ${goto 222}${top cpu 3} ${goto 274}${top mem 3}
+					    ${font Orore:size=8}L${font} 4  -  ${top name 4}${alignr}${goto 170}${top pid 4} ${goto 222}${top cpu 4} ${goto 274}${top mem 4}
+					    ${font Orore:size=8}L${font} 5  -  ${top name 5}${alignr}${goto 170}${top pid 5} ${goto 222}${top cpu 5} ${goto 274}${top mem 5}
+	${offset 15} 		 ${font Orore:size=8}L${font} 6  -  ${top name 6}${alignr}${goto 170}${top pid 6} ${goto 222}${top cpu 6} ${goto 274}${top mem 6}
+	${offset 15} 		 ${font Orore:size=8}L${font} 7  -  ${top name 7}${alignr}${goto 170}${top pid 7} ${goto 222}${top cpu 7} ${goto 274}${top mem 7}
+	${offset 15} 		 ${font Orore:size=8}L${font} 8  -  ${top name 8}${alignr}${goto 170}${top pid 8} ${goto 222}${top cpu 8} ${goto 274}${top mem 8}
+	${offset 15} 		 ${font Orore:size=8}L${font} 9  -  ${top name 9}${alignr}${goto 170}${top pid 9} ${goto 222}${top cpu 9} ${goto 274}${top mem 9}
+
+
+#
+#
+###################################
+${voffset -25}
+#################################
+${font Ubuntu:size=10}D I S K  ${font ConkyColors:size=14}h${font}   ${hr 2}${font}
+#
+    ${font ConkyColors:size=20}i${font}${offset 3}${voffset -12}root / : ${alignr}${offset -10}${fs_used /} / ${fs_size /}${alignr}${fs_bar /}
+        ${offset 30}I/O Read: ${alignr}${offset -10}${diskio_read /dev/sda6}${alignr}${diskiograph_read sda6 8,100}
+        ${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write /dev/sda5}${alignr}${diskiograph_write sda5 8,100}
+    ${font ConkyColors:size=20}i${font}${offset 3}${voffset -12}mors ~/ : ${alignr}${offset -10}${fs_used /home/mors} / ${fs_size /home/mors}${alignr}${fs_bar /home/mors}
+        ${offset 30}I/O Read: ${alignr}${offset -10}${diskio_read sda7}${alignr}${diskiograph_read sda7 8,100}
+        ${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write sda6}${alignr}${diskiograph_write sda6 8,100}
+    ${font Orore:size=20}T${font}${offset 3}${voffset -12}Windows C: ${alignr}${offset -10}${fs_used /run/media/mors/A43699E13699B4B0/} / ${fs_size /run/media/mors/A43699E13699B4B0/}${alignr}${fs_bar /run/media/mors/A43699E13699B4B0/}
+        ${offset 30}I/O Read: ${alignr}${offset -10}${diskio_read sda2}${alignr}${diskiograph_read sda2 8,100}
+        ${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write sda2}${alignr}${diskiograph_write sda2 8,100}
+	${offset 7}${font Orore:size=20}T${font}${offset 3}${voffset -12}Windows D: ${alignr}${offset -10}${fs_used /run/media/mors/B4043E0E043DD3D8/} / ${fs_size /run/media/mors/B4043E0E043DD3D8/}${alignr}${fs_bar /run/media/mors/B4043E0E043DD3D8/}
+        ${offset 30}I/O Read: ${alignr}${offset -10}${diskio_read sda3}${alignr}${diskiograph_read sda3 8,100}
+        ${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write sda3}${alignr}${diskiograph_write sda3 8,100}
+#
+#
+#
+###########################
+${voffset 0}
+${font Ubuntu:size=10}I N T E R N E T  ${font Orore:size=18}I${font}   IP:${addr wlp2s0}   ${hr 2}${font}
+#
+    ${font ConkyColors:size=20}j${font}${offset 8}${voffset -12}${font ConkyColors:size=8}t${font} Wi-Fi Downspeed: ${alignr}${offset -10$}${downspeed wlp2s0}${alignr}${downspeedgraph wlp2s0 8,100}
+#    
+    ${offset 35}${font ConkyColors:size=8}s${font} Wi-Fi Upspeed: ${alignr}${offset -10$}${upspeed wlp2s0}${alignr}${upspeedgraph wlp2s0 8,100}
+#
+#
+#
+#
+#    
+#    
+###################################################################################################################
+###################################################################################################################
+###################################################################################################################
+#${font Ubuntu:size=10}N V I D I A   ${hr 2}${font}
+#${font Ubuntu:size=10,weight:bold}${color5}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}${font}
+#${font StyleBats:size=20}u${font}${offset 8}${voffset -12}GPU Temp ${alignr}${execi 60 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader} °C
+#${offset 30}Fan Speed ${alignr}${execi 60 nvidia-settings -q [fan:0]/GPUCurrentFanSpeed -t} %
+#${offset 30}GPU Clock ${alignr}${execi 60 nvidia-settings -q GPUCurrentClockFreqs | grep -m 1 Attribute | awk '{print $4}' | sed -e 's/\.//' | cut -d, -f1} MHz
+#${offset 30}Mem Clock ${alignr}${execi 86400 nvidia-settings -q all| grep -m 1 GPUCurrentProcessorClockFreqs | awk '{print $4}' | sed 's/.$//'} MHz
+#${offset 30}Mem Used ${alignr}${execi 60 nvidia-settings -q [gpu:0]/UsedDedicatedGPUMemory -t} / ${exec nvidia-settings -q [gpu:0]/TotalDedicatedGPUMemory -t} MiB0
+]];
