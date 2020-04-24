@@ -2,4 +2,4 @@
 
 my backup dotfiles
 
-gpg test
+gpg2 test
