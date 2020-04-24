@@ -2,4 +2,4 @@
 
 my backup dotfiles
 
-token test
+gpg test
