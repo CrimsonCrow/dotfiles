@@ -2,4 +2,4 @@
 
 my backup dotfiles
 
- test ssh
+test
