@@ -1,0 +1,77 @@
+conky.config = {
+-- Settings --
+  background = false,
+  update_interval = 10,
+
+  default_bar_width = 100,
+  default_bar_height = 8,
+  default_graph_width = 200,
+  default_graph_height = 100, 
+
+  double_buffer = true,
+  no_buffers = true,
+  extra_newline = false,
+  if_up_strictness = 'address',
+  text_buffer_size = 2048,
+  short_units = true,
+-- End Settings --
+-- Position --
+  alignment = 'top_left',
+  gap_x = 80,
+  gap_y = 470,
+  minimum_width = 380,
+-- End Position --
+-- Borders --
+  border_inner_margin = 0,
+  border_outer_margin = 0,
+  border_width = 0,
+  draw_borders = false,
+  draw_graph_borders = false,
+  draw_outline = false,
+  draw_shades = false,
+-- End Borders --
+-- Window --
+  own_window = true,
+  own_window_type = 'normal',
+  own_window_argb_visual = true,
+  own_window_argb_value = 0,
+  own_window_transparent = false,
+  own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+-- End Window --
+-- Font --
+  max_text_width = 0,
+  override_utf8_locale = true,
+  uppercase = false,
+  use_spacer = 'none',
+  use_xft = true,
+  font = 'Hack:size=9',
+  xftalpha = 0.9,
+-- End Font --
+-- Colors -- 
+
+color9 = '#FFFFFF',
+color0 = '#04B404',
+color1 = '#31B404',
+color2 = '#5FB404',
+color3 = '#86B404',
+color4 = '#AEB404',
+color5 = '#FFBF00',
+color6 = '#FF8000',
+color7 = '#FF4000',
+color8 = '#FF0000',
+default_color = '#93A1A1',
+default_outline_color = '#000000',
+default_shade_color = '#000000',
+-- End Color --
+
+  own_window_colour = '#000000',
+  own_window_transparent = true,
+};
+
+conky.text = [[
+${font Hack:size=14}${color9}Todo List${font}
+${stippled_hr}
+#${execp ./viewnotes.sh}
+${font Hack:size=12}WIP ${font}
+${font Hack:size=10}install task${font}
+]];

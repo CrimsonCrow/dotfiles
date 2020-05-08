@@ -1,0 +1,78 @@
+conky.config = {
+-- Settings --
+  background = false,
+  cpu_avg_samples = 1,
+  diskio_avg_samples = 10,
+  net_avg_samples = 1,
+  update_interval = 1,
+
+  default_bar_width = 100,
+  default_bar_height = 8,
+  default_graph_width = 200,
+  default_graph_height = 100, 
+
+  double_buffer = true,
+  no_buffers = true,
+  extra_newline = false,
+  if_up_strictness = 'address',
+  temperature_unit = 'celsius',
+  text_buffer_size = 2048,
+  short_units = true,
+-- End Settings --
+-- Position --
+  alignment = 'top_left',
+  gap_x = 0,
+  gap_y = 0,
+  minimum_width = 575,
+  minimum_height = 300,
+  maximum_width = 575,
+-- End Position --
+-- Borders --
+  border_inner_margin = 0,
+  border_outer_margin = 0,
+  border_width = 0,
+  draw_borders = false,
+  draw_graph_borders = false,
+  draw_outline = false,
+  draw_shades = false,
+-- End Borders --
+-- Window --
+  own_window = true,
+  own_window_type = 'normal',
+  own_window_argb_visual = true,
+  own_window_argb_value = 0,
+  own_window_transparent = false,
+  own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+-- End Window --
+-- Font --
+  max_text_width = 0,
+  override_utf8_locale = true,
+  uppercase = false,
+  use_spacer = 'none',
+  use_xft = true,
+  font = 'Hack:size=9',
+  xftalpha = 0.9,
+-- End Font --
+-- Colors -- 
+default_color = '#FFFFFF',
+default_outline_color = '#000000',
+default_shade_color = '#000000',
+-- End Color --
+
+  own_window_colour = '#000000',
+  own_window_transparent = true,
+
+  lua_load = './clock_rings.lua',
+  lua_draw_hook_pre = 'clock_rings',
+
+  mpd_host = 'localhost',
+  mpd_port = 6600
+};
+
+conky.text = [[
+${voffset 136}${goto 113}${font Hack:size=24}${time %H:%M}${voffset -10}${font Hack:size=10}${font}
+${voffset -28}${goto 268}${hr 2}
+${voffset -60}${goto 288}${cpugraph 50,285,d5dcde ffffff}
+${font Hack:size=14}${voffset 0}${goto 285}${time %A, %d %B %Y}${font}
+#${voffset 4}${goto 285}${mpd_status}: ${scroll 20 ${mpd_file}}$alignr${mpd_elapsed}/${mpd_length}
+]];
