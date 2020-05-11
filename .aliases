@@ -1,0 +1,8 @@
+alias ls='ls -h --color=auto'
+alias gdb='gdb -q -nh -x "$XDG_CONFIG_HOME/gdb/init"'
+alias xi='sudo xbps-install -S'
+alias xr='sudo xbps-remove -R'
+alias xq='xbps-query -Rs'
+alias emcc='emacsclient -a "" -c'
+alias screenfetch="screenfetch -d '-cpu;-gpu'"
+alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
