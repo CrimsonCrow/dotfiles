@@ -131,10 +131,10 @@ conky.text = [[
 #################################
 	${font ConkyColors:size=20}i${font}${offset 3}${voffset -12}root / : ${alignr}${offset -10}${fs_used /} / ${fs_size /}${alignr}${fs_bar /}
 	${offset 30}I/O Read: ${alignr}${offset -10}${diskio_read /dev/sda6}${alignr}${diskiograph_read sda6 8,100}
-	${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write /dev/sda5}${alignr}${diskiograph_write sda5 8,100}
+	${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write /dev/sda6}${alignr}${diskiograph_write sda6 8,100}
 	${font ConkyColors:size=20}i${font}${offset 3}${voffset -12}mors ~/ : ${alignr}${offset -10}${fs_used /home/mors} / ${fs_size /home/mors}${alignr}${fs_bar /home/mors}
 	${offset 30}I/O Read: ${alignr}${offset -10}${diskio_read sda7}${alignr}${diskiograph_read sda7 8,100}
-	${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write sda6}${alignr}${diskiograph_write sda6 8,100}
+	${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write sda7}${alignr}${diskiograph_write sda7 8,100}
 	${font Orore:size=20}T${font}${offset 3}${voffset -12}Windows C: ${alignr}${offset -10}${fs_used /run/media/mors/A43699E13699B4B0/} / ${fs_size /run/media/mors/A43699E13699B4B0/}${alignr}${fs_bar /run/media/mors/A43699E13699B4B0/}
 	${offset 30}I/O Read: ${alignr}${offset -10}${diskio_read sda2}${alignr}${diskiograph_read sda2 8,100}
 	${offset 30}I/O Write: ${alignr}${offset -10}${diskio_write sda2}${alignr}${diskiograph_write sda2 8,100}
