@@ -17,6 +17,19 @@ _comp_options+=(globdots)
 # export alias
 source ~/.config/aliases
 
+# true-color
+source $HOME/.vim/pack/default/start/gruvbox/gruvbox_256palette.sh
+
+# key bindings
+# alt-arrow
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+
+# Home, End, Del
+bindkey  "^[[H"   beginning-of-line
+bindkey  "^[[F"   end-of-line
+bindkey  "^[[3~"  delete-char
+
 if [[ $TERM == "linux" ]]; then
   PROMPT='[%n@%m] %~ $ '
 else
