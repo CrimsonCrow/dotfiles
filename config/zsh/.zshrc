@@ -3,8 +3,8 @@
 # enabled colors and change prompt
 autoload -U colors && colors
 # History
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
 
 # tab autocompletion
@@ -15,7 +15,7 @@ compinit
 _comp_options+=(globdots)
 
 # export alias
-source ~/.config/.aliases
+source ~/.config/aliases
 
 if [[ $TERM == "linux" ]]; then
   PROMPT='[%n@%m] %~ $ '
@@ -23,8 +23,11 @@ else
   # custom third party themes
   source ~/.config/zsh/themes/oxide.zsh-theme
   # zsh-autosuggestions
-  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2> /dev/null
+  if [ -f "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2> /dev/null
+  fi
 fi
 # load zsh-syntax-highlighting; this should be last
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2> /dev/null
-
+if [ -f "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2> /dev/null
+fi
