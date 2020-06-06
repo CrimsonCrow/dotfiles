@@ -12,7 +12,6 @@
     # if you want to use more colorscheme, please load the colorscheme
     # layer
     colorscheme = "gruvbox"
-#colorscheme = "jellybeans"
     colorscheme_bg = "dark"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
