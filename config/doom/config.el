@@ -53,13 +53,13 @@
 ;; they are implemented.
 
 ;; emacs optimizing
-(setq gc-cons-threshold 50000000)
-;;(setq read-proces-output-max (* 1024 1024))
+(setq gc-cons-threshold 100000000)
+(setq read-proces-output-max (* 1024 1024))
 (setq large-file-warning-threshold 100000000)
 
 ;; transparent
 ;;(set-frame-parameter (selected-frame) 'alpha '(95 . 94))
 ;;(add-to-list 'default-frame-alist '(alpha . (95 . 94)))
 
-;;(locate-dominating-file ".dir-locals.el")
-(clang-format+-before-save 1)
+(require 'rtags) ;; optional, must have rtags installed
+;;(cmake-ide-setup)
