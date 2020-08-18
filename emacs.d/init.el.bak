@@ -22,9 +22,11 @@
  '(global-display-line-numbers-mode t)
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
+ '(org-agenda-files (list org-directory))
+ '(org-directory "~/Documents/org/")
  '(package-selected-packages
    (quote
-    (selected persp-mode perspective eshell-git-prompt fish-completion exec-path-from-shell multiple-cursors flycheck-clangcheck company-c-headers yasnippet-classic-snippets company-lsp rg hydra ibuffer-projectile ivy ggtags auto-complete which-key smartparens yasnippet-snippets doom-modeline projectile all-the-icons evil neotree flycheck-irony flycheck-rtags company-irony-c-headers company-irony doom-themes rtags cmake-ide irony-eldoc flycheck company)))
+    (org-bullets eshell-prompt-extras rainbow-delimiters selected persp-mode perspective eshell-git-prompt fish-completion exec-path-from-shell multiple-cursors flycheck-clangcheck company-c-headers yasnippet-classic-snippets company-lsp rg hydra ibuffer-projectile ivy ggtags auto-complete which-key smartparens yasnippet-snippets doom-modeline projectile all-the-icons evil neotree flycheck-irony flycheck-rtags company-irony-c-headers company-irony doom-themes rtags cmake-ide irony-eldoc flycheck company)))
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
  '(tooltip-mode nil))
@@ -36,6 +38,39 @@
  '(default ((t (:family "Hack Nerd Font" :foundry "SRC" :slant normal :weight normal :height 98 :width normal)))))
 
 (require 'use-package)
+
+(setq tls-checktrust t)
+
+;; This snippet is ready to work in both UNIX-like and Windows OS
+(let ((trustfile
+       (replace-regexp-in-string
+        "\\\\" "/"
+        (replace-regexp-in-string
+         "\n" ""
+         (shell-command-to-string (concat "python3 -m certifi"))))))
+  (setq tls-program
+        (list
+         (format "gnutls-cli%s --x509cafile %s -p %%p %%h"
+                 (if (eq window-system 'w32) ".exe" "") trustfile)))
+  ;; (setq gnutls-verify-error t)
+  (setq gnutls-trustfiles (list trustfile)))
+
+(defun check-tls-config ()
+  "Check for correctness in the TLS configuration for Emacs."
+  (interactive)
+  (let ((bad-hosts
+         (cl-loop for bad
+               in `("https://wrong.host.badssl.com/"
+                    "https://self-signed.badssl.com/")
+               if (condition-case e
+                      (url-retrieve
+                       bad (lambda (retrieved) t))
+                    (error nil))
+               collect bad)))
+    (if bad-hosts
+        (error (format "TLS misconfigured; retrieved %s ok" bad-hosts))
+      (url-retrieve "https://badssl.com"
+                    (lambda (retrieved) t)))))
 
 (require 'display-line-numbers)
 (defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode neotree-mode)
@@ -56,14 +91,21 @@
 ;;(setq backup-directory-alist `(("." . "~/.emacs.d/saves/")))
 ;;(setq backup-by-copying t)
 ;;(setq delete-old-versions t
-;;  kept-new-versions 6
-;;  kept-old-versions 2
-;;  version-control t)
+;;kept-new-versions 6
+;;kept-old-versions 2
+;;version-control t)
 
 (setq make-backup-files nil)
 
 (require 'evil)
 (evil-mode 1)
+
+(use-package try :ensure t)
+(use-package posframe :ensure t)
+(use-package iedit :ensure t)
+(use-package which-key
+  :ensure t
+  :config (which-key-mode))
 
 ;; doom-themes
 (use-package doom-themes
@@ -113,6 +155,7 @@
   
   :config
   (setq projectile-completion-system 'ivy)
+  (setq projectile-track-known-projects-automatically nil)
 
   (projectile-mode +1))
 
@@ -161,6 +204,13 @@
 	    (ibuffer-projectile-set-filter-groups)
 	    (unless (eq ibuffer-sorting-mode 'alphabetic)
 	    (ibuffer-do-sort-by-alphabetic)))))
+
+(use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+
 
 (use-package ace-window
   :ensure t
@@ -293,22 +343,20 @@
   (exec-path-from-shell-initialize))
 
 
-    (use-package fish-completion
-    :ensure t
-    :config
-    (global-fish-completion-mode))
-  ;; (use-package eshell-prompt-extras
-  ;; :ensure t
-  ;; :config
-  ;; (setq epe-show-python-info nil)
-  ;; )
-
-  (use-package eshell-git-prompt
+(use-package fish-completion
   :ensure t
   :config
-  (eshell-git-prompt-use-theme 'git-radar)
-  )
+  (global-fish-completion-mode))
 
+(use-package eshell-prompt-extras
+  :ensure t
+  :config
+  (setq epe-show-python-info nil))
+
+(use-package eshell-git-prompt
+  :ensure t
+  :config
+  (eshell-git-prompt-use-theme 'git-radar))
 
   (setq scroll-step 1)
 
@@ -331,12 +379,17 @@
             (t (select-or-create (completing-read "Select Shell:" (cons "New eshell" names)))))))
 
 
-
 (defun eshell/in-term (prog &rest args)
   "Run shell command in term buffer."
   (switch-to-buffer (apply #'make-term prog prog nil args))
   (term-mode)
   (term-char-mode))
+
+ (setq eshell-prompt-function
+  (lambda nil
+    (concat
+     (eshell/pwd)
+     " $ ")))
 
 (use-package perspective
   :ensure t
@@ -347,6 +400,164 @@
       (setq wg-morph-on nil) ;; switch off animation
       (setq persp-autokill-buffer-on-remove 'kill-weak)
       (add-hook 'after-init-hook #'(lambda () (persp-mode 1))))
+
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+
+(add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; keybinding management
+(define-key smartparens-mode-map (kbd "C-M-f") 'sp-forward-sexp)
+(define-key smartparens-mode-map (kbd "C-M-b") 'sp-backward-sexp)
+
+(define-key smartparens-mode-map (kbd "C-M-d") 'sp-down-sexp)
+(define-key smartparens-mode-map (kbd "C-M-a") 'sp-backward-down-sexp)
+(define-key smartparens-mode-map (kbd "C-S-d") 'sp-beginning-of-sexp)
+(define-key smartparens-mode-map (kbd "C-S-a") 'sp-end-of-sexp)
+
+(define-key smartparens-mode-map (kbd "C-M-e") 'sp-up-sexp)
+(define-key smartparens-mode-map (kbd "C-M-u") 'sp-backward-up-sexp)
+(define-key smartparens-mode-map (kbd "C-M-t") 'sp-transpose-sexp)
+
+(define-key smartparens-mode-map (kbd "C-M-n") 'sp-forward-hybrid-sexp)
+(define-key smartparens-mode-map (kbd "C-M-p") 'sp-backward-hybrid-sexp)
+
+(define-key smartparens-mode-map (kbd "C-M-k") 'sp-kill-sexp)
+(define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
+
+(define-key smartparens-mode-map (kbd "M-<delete>") 'sp-unwrap-sexp)
+(define-key smartparens-mode-map (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
+
+(define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-M-<left>") 'sp-backward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-M-<right>") 'sp-backward-barf-sexp)
+
+(define-key smartparens-mode-map (kbd "M-D") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "C-M-<delete>") 'sp-splice-sexp-killing-forward)
+(define-key smartparens-mode-map (kbd "C-M-<backspace>") 'sp-splice-sexp-killing-backward)
+(define-key smartparens-mode-map (kbd "C-S-<backspace>") 'sp-splice-sexp-killing-around)
+
+(define-key smartparens-mode-map (kbd "C-]") 'sp-select-next-thing-exchange)
+(define-key smartparens-mode-map (kbd "C-<left_bracket>") 'sp-select-previous-thing)
+(define-key smartparens-mode-map (kbd "C-M-]") 'sp-select-next-thing)
+
+(define-key smartparens-mode-map (kbd "M-F") 'sp-forward-symbol)
+(define-key smartparens-mode-map (kbd "M-B") 'sp-backward-symbol)
+
+(define-key smartparens-mode-map (kbd "C-\"") 'sp-change-inner)
+(define-key smartparens-mode-map (kbd "M-i") 'sp-change-enclosing)
+
+(bind-key "C-c f" (lambda () (interactive) (sp-beginning-of-sexp 2)) smartparens-mode-map)
+(bind-key "C-c b" (lambda () (interactive) (sp-beginning-of-sexp -2)) smartparens-mode-map)
+
+(bind-key "C-M-s"
+          (defhydra smartparens-hydra ()
+            "Smartparens"
+            ("d" sp-down-sexp "Down")
+            ("e" sp-up-sexp "Up")
+            ("u" sp-backward-up-sexp "Up")
+            ("a" sp-backward-down-sexp "Down")
+            ("f" sp-forward-sexp "Forward")
+            ("b" sp-backward-sexp "Backward")
+            ("k" sp-kill-sexp "Kill" :color blue)
+            ("q" nil "Quit" :color blue))
+          smartparens-mode-map)
+
+(bind-key "H-t" 'sp-prefix-tag-object smartparens-mode-map)
+(bind-key "H-p" 'sp-prefix-pair-object smartparens-mode-map)
+(bind-key "H-y" 'sp-prefix-symbol-object smartparens-mode-map)
+(bind-key "H-h" 'sp-highlight-current-sexp smartparens-mode-map)
+(bind-key "H-e" 'sp-prefix-save-excursion smartparens-mode-map)
+(bind-key "H-s c" 'sp-convolute-sexp smartparens-mode-map)
+(bind-key "H-s a" 'sp-absorb-sexp smartparens-mode-map)
+(bind-key "H-s e" 'sp-emit-sexp smartparens-mode-map)
+(bind-key "H-s p" 'sp-add-to-previous-sexp smartparens-mode-map)
+(bind-key "H-s n" 'sp-add-to-next-sexp smartparens-mode-map)
+(bind-key "H-s j" 'sp-join-sexp smartparens-mode-map)
+(bind-key "H-s s" 'sp-split-sexp smartparens-mode-map)
+(bind-key "H-s r" 'sp-rewrap-sexp smartparens-mode-map)
+(defvar hyp-s-x-map)
+(define-prefix-command 'hyp-s-x-map)
+(bind-key "H-s x" hyp-s-x-map smartparens-mode-map)
+(bind-key "H-s x x" 'sp-extract-before-sexp smartparens-mode-map)
+(bind-key "H-s x a" 'sp-extract-after-sexp smartparens-mode-map)
+(bind-key "H-s x s" 'sp-swap-enclosing-sexp smartparens-mode-map)
+
+(bind-key "C-x C-t" 'sp-transpose-hybrid-sexp smartparens-mode-map)
+
+(bind-key ";" 'sp-comment emacs-lisp-mode-map)
+
+(bind-key [remap c-electric-backspace] 'sp-backward-delete-char smartparens-strict-mode-map)
+
+;;;;;;;;;;;;;;;;;;
+;; pair management
+
+(sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
+(bind-key "C-(" 'sp---wrap-with-40 minibuffer-local-map)
+
+(sp-with-modes 'org-mode
+  (sp-local-pair "=" "=" :wrap "C-="))
+
+(sp-with-modes 'textile-mode
+  (sp-local-pair "*" "*")
+  (sp-local-pair "_" "_")
+  (sp-local-pair "@" "@"))
+
+(sp-with-modes 'web-mode
+  (sp-local-pair "{{#if" "{{/if")
+  (sp-local-pair "{{#unless" "{{/unless"))
+
+;;; tex-mode latex-mode
+(sp-with-modes '(tex-mode plain-tex-mode latex-mode)
+  (sp-local-tag "i" "\"<" "\">"))
+
+;;; lisp modes
+(sp-with-modes sp-lisp-modes
+  (sp-local-pair "(" nil
+                 :wrap "C-("
+                 :pre-handlers '(my-add-space-before-sexp-insertion)
+                 :post-handlers '(my-add-space-after-sexp-insertion)))
+
+(defun my-add-space-after-sexp-insertion (id action _context)
+  (when (eq action 'insert)
+    (save-excursion
+      (forward-char (sp-get-pair id :cl-l))
+      (when (or (eq (char-syntax (following-char)) ?w)
+                (looking-at (sp--get-opening-regexp)))
+        (insert " ")))))
+
+(defun my-add-space-before-sexp-insertion (id action _context)
+  (when (eq action 'insert)
+    (save-excursion
+      (backward-char (length id))
+      (when (or (eq (char-syntax (preceding-char)) ?w)
+                (and (looking-back (sp--get-closing-regexp))
+                     (not (eq (char-syntax (preceding-char)) ?'))))
+        (insert " ")))))
+
+;;; C++
+(sp-with-modes '(malabar-mode c++-mode)
+  (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+(sp-local-pair 'c++-mode "/*" "*/" :post-handlers '((" | " "SPC")
+                                                    ("* ||\n[i]" "RET")))
+
+(setq-default sp-escape-quotes-after-insert nil)
+
+(sp-local-pair 'js2-mode "/**" "*/" :post-handlers '(("| " "SPC")
+                                                     ("* ||\n[i]" "RET")))
+(smartparens-global-mode)
+)
+
+
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
+(show-paren-mode t)
 
 (require 'rtags)
 (cmake-ide-setup)
@@ -380,6 +591,8 @@
          (c++-mode))
         ((string= major-mode "c++-mode")
          (c-mode))))
+
+(server-start)
 
 (provide 'init)
 ;;; init.el ends here
