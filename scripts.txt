@@ -1,5 +1,5 @@
 # clang-format
-clang-format -style="{BasedOnStyle: llvm, IndentWidth: 4, AlignConsecutiveDeclarations: false, PointerAlignment: Left}" --dump-config > .clang-format
+clang-format -style="{BasedOnStyle: llvm, IndentWidth: 4, AlignConsecutiveDeclarations: false, PointerAlignment: Left, SpaceBeforeParens: Never}" --dump-config > .clang-format
 
 # dual monitor
 xrandr --output VGA-1 --auto --right-of LVDS-1
