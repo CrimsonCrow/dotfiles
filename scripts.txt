@@ -2,7 +2,7 @@
 clang-format -style="{BasedOnStyle: llvm, IndentWidth: 4, AlignConsecutiveDeclarations: false, PointerAlignment: Left}" --dump-config > .clang-format
 
 # dual monitor
-xrandr --auto --output VGA-1 --right-of LVDS-1
+xrandr --output VGA-1 --auto --right-of LVDS-1
 
 # fics
 xboard -ics -icshost www.freechess.org
