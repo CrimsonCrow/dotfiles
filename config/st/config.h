@@ -102,30 +102,30 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 static const char *colorname[] = {
-	/* 8 normal colors */
-	"#5c6370",
-	"#e06c75",
-	"#98c379",
-	"#e5c07b",
-	"#61afef",
-	"#c678dd",
-	"#56b6c2",
-	"#abb2bf",
+        /* 8 normal colors */
+    "#1F2229",
+    "#D41919",
+    "#5EBDAB",
+    "#FEA44C",
+    "#367BF0",
+    "#9755B3",
+    "#49AEE6",
+    "#E6E6E6",
 
-	/* 8 bright colors */
-	"#4b5263",
-	"#be5046",
-	"#98c379",
-	"#d19a66",
-	"#61afef",
-	"#c678dd",
-	"#56b6c2",
-	"#3e4452",
+        /* 8 bright colors */
+    "#198388",
+    "#EC0101",
+    "#47D4B9",
+    "#FF8A18",
+    "#277FFF",
+    "#962AC3",
+    "#05A1F7",
+    "#FFFFFF",
 
-	[255] = 0,
+        [255] = 0,
 
-	/* more colors can be added after 255 to use with DefaultXX */
-	"#282c34",
+        /* more colors can be added after 255 to use with DefaultXX */
+        "#23252E",
 };
 
 /*
