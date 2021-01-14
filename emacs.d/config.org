@@ -8,7 +8,7 @@
 All relevant personal info.
 
 #+BEGIN_SRC emacs-lisp :results silent
-(setq user-full-name "Jae-Al Ornales")
+(setq user-full-name "CrimsonCrow")
 #+END_SRC
 
 ** Making Emacs secure
