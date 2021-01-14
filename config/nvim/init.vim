@@ -1,7 +1,7 @@
 call plug#begin(stdpath('config') . '/plugged')
 
 " Colorscheme
-" Plug 'joshdick/onedark.vim'
+Plug 'joshdick/onedark.vim'
 " Better syntax highlighting
 Plug 'sheerun/vim-polyglot'
 " status line
@@ -103,4 +103,4 @@ set laststatus=2
 set noshowmode
 
 " mouse support
-set mouse=a
+" set mouse=a
