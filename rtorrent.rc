@@ -35,6 +35,23 @@
 #throttle.global_down.max_rate.set_kb = 0
 #throttle.global_up.max_rate.set_kb = 0
 
+# Maximum number of simultaneous downloads and uploads slots (global slots!) (`max_downloads_global`, `max_uploads_global`)
+#throttle.max_downloads.global.set = 100
+#throttle.max_uploads.global.set   = 100
+
+# Maximum number of simultaneous downloads and uploads slots per torrent (`max_uploads`) Default: `50` for both
+#throttle.max_downloads.set = 50
+#throttle.max_uploads.set = 50
+
+# Set the numwant field sent to the tracker, which indicates how many peers we want. 
+#  A negative value disables this feature. Default: `-1` (`tracker_numwant`)
+#trackers.numwant.set = 100
+
+# Set the max amount of memory address space used to mapping file chunks. This refers to memory mapping, not
+#  physical memory allocation. Default: `1GB` (`max_memory_usage`) 
+# This may also be set using ulimit -m where 3/4 will be allocated to file chunks.
+# pieces.memory.max.set = 2048M
+
 # Default directory to save the downloaded torrents.
 #
 directory.default.set = /home/crow/Downloads/torrents
@@ -94,7 +111,8 @@ trackers.use_udp.set = yes
 # outgoing connections but retries with encryption if they fail, preferring
 # plain-text to RC4 encryption after the encrypted handshake.
 #
-# protocol.encryption.set = require,require_RC4
+# protocol.encryption.set = allow_incoming,enable_retry,prefer_plaintext
+protocol.encryption.set = require,require_RC4
 
 # Enable DHT support for trackerless torrents or when all trackers are down.
 # May be set to "disable" (completely disable DHT), "off" (do not start DHT),
