@@ -23,7 +23,8 @@ static const char *colors[][3]      = {
 
 /* tagging */
 // tag names (upper left)
-static const char *tags[] = {"", "", "", "", "", "", "", "", "", ""};
+//static const char *tags[] = {"", "", "", "", "", "", "", "", "", ""};
+static const char *tags[] = {"", "", "", "", "", "", "", "", ""};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -70,7 +71,7 @@ static const char *dmenucmd[] = {
     "dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1,
     "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
 // sets the default terminal
-static const char *termcmd[] = {"qterminal", NULL};
+static const char *termcmd[] = {"st", NULL};
 // volume controls
 static const char *upvol[] = {"amixer", "-q", "set", "Master", "5%+", "unmute", NULL};
 static const char *downvol[] = {"amixer", "-q", "set", "Master", "5%-", "unmute", NULL};
@@ -78,6 +79,9 @@ static const char *downvol[] = {"amixer", "-q", "set", "Master", "5%-", "unmute"
 // brightness control
 static const char *brupcmd[] = {"brightnessctl", "set", "2%+", NULL};
 static const char *brdowncmd[] = {"brightnessctl", "set", "2%-", NULL};
+
+// lockscreen
+static const char *lockscreen[] = {"betterlockscreen", "-l", "blur", NULL};
 
 #include "shiftview.c"
 // static char *endx[] = { "/bin/sh", "-c", "endx", "externalpipe", NULL };
@@ -115,6 +119,7 @@ static Key keys[] = {
     {0, XF86XK_AudioLowerVolume, spawn, {.v = downvol}},
     {0, XF86XK_MonBrightnessUp, spawn, {.v = brupcmd}},
     {0, XF86XK_MonBrightnessDown, spawn, {.v = brdowncmd}},
+    {MODKEY | ShiftMask, XK_l, spawn, {.v = lockscreen}},
     TAGKEYS(XK_1, 0) 
     TAGKEYS(XK_2, 1) 
     TAGKEYS(XK_3, 2) 
