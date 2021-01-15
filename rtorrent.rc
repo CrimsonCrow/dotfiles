@@ -40,8 +40,8 @@
 #throttle.max_uploads.global.set   = 100
 
 # Maximum number of simultaneous downloads and uploads slots per torrent (`max_uploads`) Default: `50` for both
-#throttle.max_downloads.set = 50
-#throttle.max_uploads.set = 50
+#throttle.max_downloads.set = 30
+#throttle.max_uploads.set = 30
 
 # Set the numwant field sent to the tracker, which indicates how many peers we want. 
 #  A negative value disables this feature. Default: `-1` (`tracker_numwant`)
