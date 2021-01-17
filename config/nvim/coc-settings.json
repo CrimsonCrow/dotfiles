@@ -1,0 +1,21 @@
+{
+    "languageserver": {
+        "clangd": {
+            "command": "clangd",
+            "filetypes": [
+                "c",
+                "cpp",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".git/",
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/clangd"
+                }
+            }
+        }
+    }
+}
