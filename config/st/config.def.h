@@ -5,8 +5,13 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "JetBrainsMono Nerd Font Mono:pixelsize=13:antialias=true:autohint=true";
-static char *font2[] = { "JetBrainsMono Nerd Font Mono:pixelsize=13:antialias=true:autohint=true", "IPAGothic:pixelsize=14:antialias=true:autohint=true", "Symbola:pixelsize=14:antialias=true:autohint=true" };
+static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+/* Spare fonts */
+static char *font2[] = {
+/*  "Inconsolata for Powerline:pixelsize=12:antialias=true:autohint=true", */
+/*  "Hack Nerd Font Mono:pixelsize=11:antialias=true:autohint=true", */
+};
+
 static int borderpx = 2;
 
 /*
@@ -17,7 +22,7 @@ static int borderpx = 2;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/bin/bash";
+static char *shell = "/bin/sh";
 char *utmp = NULL;
 /* scroll program: to enable use a string like "scroll" */
 char *scroll = NULL;
@@ -74,11 +79,11 @@ static unsigned int cursorthickness = 2;
  *    Bold affects lines thickness if boxdraw_bold is not 0. Italic is ignored.
  * 0: disable (render all U25XX glyphs normally from the font).
  */
-const int boxdraw = 1;
-const int boxdraw_bold = 1;
+const int boxdraw = 0;
+const int boxdraw_bold = 0;
 
 /* braille (U28XX):  1: render as adjacent "pixels",  0: use font */
-const int boxdraw_braille = 1;
+const int boxdraw_braille = 0;
 
 /*
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling
@@ -109,40 +114,41 @@ unsigned int tabspaces = 8;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
     /* 8 normal colors */
-    "#1F2229",
-    "#D41919",
-    "#5EBDAB",
-    "#FEA44C",
-    "#367BF0",
-    "#9755B3",
-    "#49AEE6",
-    "#E6E6E6",
+    "black",
+    "red3",
+    "green3",
+    "yellow3",
+    "blue2",
+    "magenta3",
+    "cyan3",
+    "gray90",
 
-        /* 8 bright colors */
-    "#198388",
-    "#EC0101",
-    "#47D4B9",
-    "#FF8A18",
-    "#277FFF",
-    "#962AC3",
-    "#05A1F7",
-    "#FFFFFF",
+    /* 8 bright colors */
+    "gray50",
+    "red",
+    "green",
+    "yellow",
+    "#5c5cff",
+    "magenta",
+    "cyan",
+    "white",
 
     [255] = 0,
 
     /* more colors can be added after 255 to use with DefaultXX */
-    "#151515",
-    "#d8dee9", /* foreground */
+    "#cccccc",
+    "#555555",
 };
+
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 257;
-unsigned int defaultbg = 256;
-static unsigned int defaultcs = 257;
-static unsigned int defaultrcs = 256;
+unsigned int defaultfg = 7;
+unsigned int defaultbg = 0;
+static unsigned int defaultcs = 256;
+static unsigned int defaultrcs = 257;
 
 /*
  * Default shape of cursor
@@ -186,6 +192,8 @@ static uint forcemousemod = ShiftMask;
  */
 static MouseShortcut mshortcuts[] = {
     /* mask                 button   function        argument       release */
+    { XK_ANY_MOD,           Button4, kscrollup,      {.i = 1},      0, /* !alt */ -1 },
+    { XK_ANY_MOD,           Button5, kscrolldown,    {.i = 1},      0, /* !alt */ -1 },
     { XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
     { ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
     { XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
@@ -211,8 +219,6 @@ static Shortcut shortcuts[] = {
     { TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
     { ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
     { TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-    { MODKEY,               XK_k,           kscrollup,      {.i =  1} },
-    { MODKEY,               XK_j,           kscrolldown,    {.i =  1} },
     { ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
     { ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 };
