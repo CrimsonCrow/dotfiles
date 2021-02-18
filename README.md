@@ -1,3 +1,3 @@
 # README.md
 
-my backup dotfiles
+my backup dotfiles, some scripts and configurations
