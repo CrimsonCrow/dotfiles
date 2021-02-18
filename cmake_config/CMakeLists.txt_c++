@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.16)
+project(shmup CXX)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_CLANG_TIDY clang-tidy -header-filter=.,-checks=-*,readability-*)
+
+# Debug Mode
+if(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" OR CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(ENABLE_SANITIZER_ADDRESS:BOOL=True)
+    set(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR:BOOL=True)
+    set(ENABLE_CPPCHECK:BOOL=True)
+
+    set(COMPILER_WARNING_FLAGS "-Wall -Wextra -Wshadow -Wpedantic -Werror -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wconversion -Wmisleading-indentation -Wnull-dereference -Wsign-conversion -Wdouble-promotion -Wformat=2 -Weffc++")
+    set(COMPILER_WARNING_FLAGS_BLACKLIST "-Weverything -Wno-c++98-compat -Wno-padded")
+    set(COMPILER_WARNING_FLAGS_CLANG "") # -Wlifetime")
+    set(COMPILER_WARNING_FLAGS_GNU "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast")
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILER_WARNING_FLAGS} ${COMPILER_WARNING_FLAGS_BLACKLIST} -g -fno-omit-frame-pointer -fsanitize=address -fno-exceptions -fno-rtti")
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILER_WARNING_FLAGS_GNU} -static-libasan")
+    endif()
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILER_WARNING_FLAGS_CLANG}")
+    endif()
+endif()
+
+# Release Mode
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s")
+endif()
+
+include_directories(include)
+
+file(GLOB_RECURSE ${PROJECT_NAME}_sources ${PROJECT_SOURCE_DIR}/src/*.cc ${PROJECT_SOURCE_DIR}/src/*/*.cc)
+
+add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_sources})
+target_link_libraries(${PROJECT_NAME})
