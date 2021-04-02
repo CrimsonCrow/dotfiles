@@ -31,9 +31,14 @@ static const Rule rules[] = {
      */
     /* class            instance    title       tags mask     isfloating   monitor */
     { "Gimp",           NULL,       NULL,       0,            0,           -1 },
+    { "Tor Browser",    NULL,       NULL,       1 << 8,       0,           -1 },
     { "Firefox",        NULL,       NULL,       1 << 8,       0,           -1 },
     { "KeePassXC",      NULL,       NULL,       1 << 7,       0,           -1 },
     { "Transmission",   NULL,       NULL,       1 << 6,       0,           -1 },
+    { "mpv",            NULL,       NULL,       1 << 5,       0,           -1 },
+    { "Thunar",         NULL,       NULL,       1 << 4,       0,           -1 },
+    { "Thunderbird",    NULL,       NULL,       1 << 3,       0,           -1 },
+    { "Emacs",          NULL,       NULL,       1 << 2,       0,           -1 },
 };
 
 /* layout(s) */
@@ -69,8 +74,8 @@ static const char *upvol[] = {"amixer", "-q", "set", "Master", "5%+", "unmute", 
 static const char *downvol[] = {"amixer", "-q", "set", "Master", "5%-", "unmute", NULL};
 
 /* brightness controls */
-static const char *brupcmd[] = {"brightnessctl", "set", "2%+", NULL};
-static const char *brdowncmd[] = {"brightnessctl", "set", "2%-", NULL};
+static const char *brupcmd[] = {"brightnessctl", "set", "5%+", NULL};
+static const char *brdowncmd[] = {"brightnessctl", "set", "5%-", NULL};
 
 /* lockscreen */
 static const char *lockscreen[] = {"betterlockscreen", "-l", "blur", NULL};
@@ -95,8 +100,8 @@ static Key keys[] = {
     { MODKEY,                       XK_space,  setlayout,      {0} },
     { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
     { MODKEY,                       XK_f,      togglefullscr,  {0} },
-    { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-    { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+    //{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+    //{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
     { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
     { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
